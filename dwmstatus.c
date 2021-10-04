@@ -177,7 +177,7 @@ int
 main(void)
 {
 	char *status;
-	char *t0, *t1, *t2;
+	/* char *t0, *t1, *t2; */
 	char *avgs;
 	char *bat;
 	char *tm;
@@ -191,15 +191,15 @@ main(void)
 		avgs = loadavg();
 		bat = getbattery("/sys/class/power_supply/BAT0");
 		tm = mktimes("%a %H:%M %d/%b/%Y %Z", tzargentina);
-		t0 = gettemperature("/sys/devices/virtual/hwmon/hwmon0", "temp1_input");
-		t1 = gettemperature("/sys/devices/virtual/hwmon/hwmon2", "temp1_input");
-		t2 = gettemperature("/sys/devices/virtual/hwmon/hwmon4", "temp1_input");
+		/* t0 = gettemperature("/sys/devices/virtual/hwmon/hwmon0", "temp1_input"); */
+		/* t1 = gettemperature("/sys/devices/virtual/hwmon/hwmon2", "temp1_input"); */
+		/* t2 = gettemperature("/sys/devices/virtual/hwmon/hwmon4", "temp1_input"); */
 
 		status = smprintf("b:%s c:%s-%s-%s l:%s t:%s", bat, t0, t1, t2, avgs, tm);
 		setstatus(status);
 
 		free(status);
-		free(t0); free(t1); free(t2);
+		/* free(t0); free(t1); free(t2); */
 		free(avgs);
 		free(bat);
 		free(tm);
