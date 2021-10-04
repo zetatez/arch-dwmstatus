@@ -195,7 +195,8 @@ main(void)
 		/* t1 = gettemperature("/sys/devices/virtual/hwmon/hwmon2", "temp1_input"); */
 		/* t2 = gettemperature("/sys/devices/virtual/hwmon/hwmon4", "temp1_input"); */
 
-		status = smprintf("b:%s c:%s-%s-%s l:%s t:%s", bat, t0, t1, t2, avgs, tm);
+		/* status = smprintf("b:%s c:%s-%s-%s l:%s t:%s", bat, t0, t1, t2, avgs, tm); */
+		status = smprintf("b:%s l:%s t:%s", bat, avgs, tm);
 		setstatus(status);
 
 		free(status);
