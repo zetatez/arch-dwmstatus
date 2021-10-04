@@ -17,7 +17,7 @@
 
 #include <X11/Xlib.h>
 
-char *tzargentina = "GTM+*";
+char *tzargentina = "GTM-8";
 
 static Display *dpy;
 
