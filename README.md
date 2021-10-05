@@ -1,11 +1,15 @@
+![dwm](https://raw.githubusercontent.com/zetatez/arch-dwmstatus/dev/dwmstatus.png)
 
 # dwmstatus
 
 ```bash
-git clone git://git.suckless.org/dwmstatus
+mkdir ~/.dwm; cd ~/.dwm
+git clone git@github.com:zetatez/arch-dwmstatus.git
+
 cd dwmstatus
-make
 sudo make PREFIX=/usr install
-# add following line to your .xinitrc
-	#dwmstatus 2>&1 >/dev/null &
+
+cp autostart.sh ~/.dwm
+chmod 755 autostart.sh
 ```
+
