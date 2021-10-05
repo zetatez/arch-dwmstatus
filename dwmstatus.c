@@ -214,9 +214,9 @@ calculate_speed(char *speedstr, unsigned long long int newval, unsigned long lon
 	speed = (newval - oldval) / 1024.0;
 	if (speed > 1024.0) {
 	    speed /= 1024.0;
-	    sprintf(speedstr, "%.3fmb/s", speed);
+	    sprintf(speedstr, "%.3f mb/s", speed);
 	} else {
-	    sprintf(speedstr, "%.2fkb/s", speed);
+	    sprintf(speedstr, "%.2f kb/s", speed);
 	}
 }
 
