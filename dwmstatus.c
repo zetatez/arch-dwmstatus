@@ -14,6 +14,7 @@
 #include <time.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/statvfs.h>
 
 #include <X11/Xlib.h>
 
@@ -153,13 +154,26 @@ getbattery(char *base)
 	} else if(!strncmp(co, "Charging", 8)) {
 		status = '+';
 	} else {
-		status = '_';
+		status = '^';
 	}
 
 	if (remcap < 0 || descap < 0)
 		return smprintf("invalid");
 
 	return smprintf("%.0f%%%c", ((float)remcap / (float)descap) * 100, status);
+}
+
+char *get_freespace(char *mntpt){
+    struct statvfs data;
+    double total, used = 0;
+
+    if ( (statvfs(mntpt, &data)) < 0){
+		fprintf(stderr, "can't get info on disk.\n");
+		return("-");
+    }
+    total = (data.f_blocks * data.f_frsize);
+    used  = (data.f_blocks - data.f_bfree) * data.f_frsize ;
+    return(smprintf("%.0f%%", (used/total*100)));
 }
 
 char *
@@ -250,12 +264,13 @@ int
 main(void)
 {
 	char *status;
-	char *t0, *t1, *t2, *t3, *t4, *t5, *t6, *t7, *t8;
-	char *avgs;
-	char *bat;
 	char *tm;
+	char *bat;
+	char *rootfs;
+	char *avgs;
  	char *netstats;
 	static unsigned long long int rec, sent;
+	char *t0, *t1, *t2, *t3, *t4, *t5, *t6, *t7, *t8;
 
 	if (!(dpy = XOpenDisplay(NULL))) {
 		fprintf(stderr, "dwmstatus: cannot open display.\n");
@@ -265,8 +280,9 @@ main(void)
 	for (;;sleep(60)) {
 		tm = mktimes("%a ∫_%H:%M e^r(t)du %d/%b/%Y %Z", tzargentina);
 		bat = getbattery("/sys/class/power_supply/BAT0");
-		netstats = get_netusage(&rec, &sent);
+		rootfs = get_freespace("/");
 		avgs = loadavg();
+		netstats = get_netusage(&rec, &sent);
 		t0 = gettemperature("/sys/class/thermal/thermal_zone0", "temp");
 		t1 = gettemperature("/sys/class/thermal/thermal_zone1", "temp");
 		t2 = gettemperature("/sys/class/thermal/thermal_zone2", "temp");
@@ -277,13 +293,14 @@ main(void)
 		t7 = gettemperature("/sys/class/thermal/thermal_zone7", "temp");
 		t8 = gettemperature("/sys/class/thermal/thermal_zone8", "temp");
 
-		status = smprintf("Arch %s  %s  %s%s%s%s%s%s%s%s%s  %s  %s ", netstats, bat, t0, t1, t2, t3, t4, t5, t6, t7, t8, avgs, tm);
+		status = smprintf("Arch %s %s %s %s%s%s%s%s%s%s%s%s %s %s ", bat, rootfs, netstats, t0, t1, t2, t3, t4, t5, t6, t7, t8, avgs, tm);
 		setstatus(status);
 
         free(t0); free(t1); free(t2); free(t3); free(t4); free(t5); free(t6); free(t7); free(t8);
-		free(avgs);
-		free(bat);
 		free(tm);
+		free(bat);
+		free(rootfs);
+		free(avgs);
 		free(status);
 	}
 
