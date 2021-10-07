@@ -278,7 +278,7 @@ main(void)
 	}
 
 	for (;;sleep(60)) {
-		tm = mktimes("%a ∫_%H:%M e^r(t)du %d/%b/%Y %Z", tzargentina);
+		tm = mktimes("%a %b/%d %Y %Z ∫_%H:%M e^r(t)du ", tzargentina);
 		bat = getbattery("/sys/class/power_supply/BAT0");
 		rootfs = get_freespace("/");
 		avgs = loadavg();
