@@ -1,6 +1,6 @@
 /*
- * Copy me if you can.
- * by 20h
+ * Author: lorenzo
+ * E-mail: zetatez@icloud.com
  */
 
 #define _BSD_SOURCE
