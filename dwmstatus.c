@@ -260,6 +260,7 @@ get_netusage(unsigned long long int *rec, unsigned long long int *sent)
 	return retstr;
 }
 
+/*
 int
 main(void)
 {
@@ -301,6 +302,36 @@ main(void)
 		free(bat);
 		free(rootfs);
 		free(avgs);
+		free(status);
+	}
+
+	XCloseDisplay(dpy);
+
+	return 0;
+}
+*/
+
+int
+main(void)
+{
+	char *status;
+	char *tm;
+	char *bat;
+
+	if (!(dpy = XOpenDisplay(NULL))) {
+		fprintf(stderr, "dwmstatus: cannot open display.\n");
+		return 1;
+	}
+
+	for (;;sleep(1)) {
+		tm = mktimes("%a %b/%d %Y %Z ∫_%H:%M:%S e^r(t)du ", tzargentina);
+		bat = getbattery("/sys/class/power_supply/BAT0");
+
+        status = smprintf("Arch %s %s ", bat, tm);
+		setstatus(status);
+
+		free(tm);
+		free(bat);
 		free(status);
 	}
 
