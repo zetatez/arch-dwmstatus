@@ -324,7 +324,7 @@ main(void)
 	}
 
 	for (;;sleep(1)) {
-		tm = mktimes("%a %b/%d %Y %Z ∫_%H:%M:%S e^r(t)du ", tzargentina);
+		tm = mktimes("%a %b/%d %Y ∫_%H:%M:%S e^r(t)du ", tzargentina);
 		bat = getbattery("/sys/class/power_supply/BAT0");
 
         status = smprintf("Arch %s %s ", bat, tm);
