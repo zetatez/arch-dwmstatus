@@ -327,7 +327,7 @@ main(void)
 		tm = mktimes("%a %b/%d %Y ∫_%H:%M:%S e^r(t)du ", tzargentina);
 		bat = getbattery("/sys/class/power_supply/BAT0");
 
-        status = smprintf("Arch %s %s ", bat, tm);
+        status = smprintf("    Arch %s %s ", bat, tm);
 		setstatus(status);
 
 		free(tm);
