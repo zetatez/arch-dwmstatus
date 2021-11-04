@@ -109,7 +109,7 @@ notification(char *base, char *file)
 		return smprintf("");
 	fclose(fd);
 
-	return smprintf("Noti:%s", line);
+	return smprintf("%s", line);
 }
 
 char *
