@@ -92,6 +92,27 @@ loadavg(void)
 }
 
 char *
+notification(char *base, char *file)
+{
+    char *path, line[513];
+	FILE *fd;
+
+	memset(line, 0, sizeof(line));
+
+	path = smprintf("%s/%s", base, file);
+	fd = fopen(path, "r");
+	free(path);
+	if (fd == NULL)
+		return smprintf("");
+
+	if (fgets(line, sizeof(line)-1, fd) == NULL)
+		return smprintf("");
+	fclose(fd);
+
+	return smprintf("Noti:%s", line);
+}
+
+char *
 readfile(char *base, char *file)
 {
 	char *path, line[513];
@@ -105,8 +126,7 @@ readfile(char *base, char *file)
 	if (fd == NULL)
 		return NULL;
 
-	if (fgets(line, sizeof(line)-1, fd) == NULL)
-		return NULL;
+	if (fgets(line, sizeof(line)-1, fd) == NULL) return NULL;
 	fclose(fd);
 
 	return smprintf("%s", line);
@@ -170,14 +190,7 @@ char *get_freespace(char *mntpt){
     if ( (statvfs(mntpt, &data)) < 0){
 		fprintf(stderr, "can't get info on disk.\n");
 		return("-");
-    }
-    total = (data.f_blocks * data.f_frsize);
-    used  = (data.f_blocks - data.f_bfree) * data.f_frsize ;
-    return(smprintf("%.0f%%", (used/total*100)));
-}
-
-char *
-gettemperature(char *base, char *sensor)
+    } total = (data.f_blocks * data.f_frsize); used  = (data.f_blocks - data.f_bfree) * data.f_frsize ; return(smprintf("%.0f%%", (used/total*100))); } char * gettemperature(char *base, char *sensor)
 {
 	char *co;
 
@@ -260,6 +273,7 @@ get_netusage(unsigned long long int *rec, unsigned long long int *sent)
 	return retstr;
 }
 
+
 /*
 int
 main(void)
@@ -317,6 +331,7 @@ main(void)
 	char *status;
 	char *tm;
 	char *bat;
+	char *msg;
 
 	if (!(dpy = XOpenDisplay(NULL))) {
 		fprintf(stderr, "dwmstatus: cannot open display.\n");
@@ -326,12 +341,13 @@ main(void)
 	for (;;sleep(1)) {
 		tm = mktimes("%a %b/%d %Y ∫_%H:%M:%S e^r(t)du ", tzargentina);
 		bat = getbattery("/sys/class/power_supply/BAT0");
-
-        status = smprintf("      Arch %s %s ", bat, tm);
+        msg = notification("/home/lorenzo", ".notification.msg");
+        status = smprintf(" Arch %s %s %s", bat, tm, msg);
 		setstatus(status);
 
 		free(tm);
 		free(bat);
+		free(msg);
 		free(status);
 	}
 
