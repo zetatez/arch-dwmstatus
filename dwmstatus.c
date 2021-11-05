@@ -281,6 +281,7 @@ main(void)
 	char *status;
 	char *tm;
 	char *bat;
+	char *msg;
 	char *rootfs;
 	char *avgs;
  	char *netstats;
@@ -295,6 +296,7 @@ main(void)
 	for (;;sleep(60)) {
 		tm = mktimes("%a %b/%d %Y %Z ∫_%H:%M e^r(t)du ", tzargentina);
 		bat = getbattery("/sys/class/power_supply/BAT0");
+        msg = notification("/home/lorenzo", ".notification.msg");
 		rootfs = get_freespace("/");
 		avgs = loadavg();
 		netstats = get_netusage(&rec, &sent);
@@ -308,12 +310,13 @@ main(void)
 		t7 = gettemperature("/sys/class/thermal/thermal_zone7", "temp");
 		t8 = gettemperature("/sys/class/thermal/thermal_zone8", "temp");
 
-		status = smprintf("Arch %s %s %s %s%s%s%s%s%s%s%s%s %s %s ", bat, rootfs, netstats, t0, t1, t2, t3, t4, t5, t6, t7, t8, avgs, tm);
+		status = smprintf("Arch %s %s %s %s%s%s%s%s%s%s%s%s %s %s %s", bat, rootfs, netstats, t0, t1, t2, t3, t4, t5, t6, t7, t8, avgs, tm, msg);
 		setstatus(status);
 
         free(t0); free(t1); free(t2); free(t3); free(t4); free(t5); free(t6); free(t7); free(t8);
 		free(tm);
 		free(bat);
+		free(msg);
 		free(rootfs);
 		free(avgs);
 		free(status);
