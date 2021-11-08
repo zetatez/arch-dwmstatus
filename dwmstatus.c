@@ -3,7 +3,7 @@
  * E-mail: zetatez@icloud.com
  */
 
-#define _BSD_SOURCE
+/* #define _BSD_SOURCE */
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -108,6 +108,8 @@ notification(char *base, char *file)
 	if (fgets(line, sizeof(line)-1, fd) == NULL)
 		return smprintf("");
 	fclose(fd);
+
+    line[strlen(line)-1]='\0';
 
 	return smprintf("%s", line);
 }
@@ -342,10 +344,10 @@ main(void)
 	}
 
 	for (;;sleep(1)) {
-		tm = mktimes("%a %b/%d %Y ∫_%H:%M:%S e^r(t)du ", tzargentina);
+		tm = mktimes("%a %b/%d,%Y∫_%H:%M:%S e^r(t)du", tzargentina);
 		bat = getbattery("/sys/class/power_supply/BAT0");
         msg = notification("/home/lorenzo", ".notification.msg");
-        status = smprintf(" Arch %s %s %s", bat, tm, msg);
+        status = smprintf(" %s [%s] [%s] ", tm, msg, bat);
 		setstatus(status);
 
 		free(tm);

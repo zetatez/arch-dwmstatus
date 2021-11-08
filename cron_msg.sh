@@ -6,5 +6,15 @@
 FILEPATH=/home/lorenzo/.notification.msg
 :> $FILEPATH
 
-task list|grep -v "ID\|---\|task\|^$"|sed "s/[ ][ ]*/ /g"|head -n 1 > $FILEPATH
+for var in `seq 1 30`; do
+    # taskwarrior
+    task list|grep -v "ID\|---\|task\|^$"|sed "s/[ ][ ]*/ /g"|head -n 1 > $FILEPATH
+
+    # email
+    :
+
+    sleep 2
+done
+
+
 
