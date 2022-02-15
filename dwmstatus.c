@@ -347,7 +347,7 @@ main(void)
 		tm = mktimes("%a %b/%d,%Y∫_%H:%M:%S e^r(t)du", tzargentina);
 		bat = getbattery("/sys/class/power_supply/BAT0");
         msg = notification("/home/lorenzo", ".notification.msg");
-        status = smprintf(" %s [%s] [%s] ", tm, msg, bat);
+        status = smprintf("%s [%s] %s ", msg, bat, tm);
 		setstatus(status);
 
 		free(tm);
