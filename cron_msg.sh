@@ -5,21 +5,23 @@
 # crontab -e
 # * * * * * sh /home/lorenzo/.suckless/arch-dwmstatus/cron_msg.sh >> /dev/null
 
-FILEPATH=/home/lorenzo/.notification.msg
+FILEPATH=/home/lorenzo/.notification.msgs
 :> $FILEPATH
 
-# Any msgs can be appended on
-task|grep -ve "^$\| task\|--" > /tmp/notification.msgs
-curl -s http://weicaixun.com/live/|grep text-justify:inter-ideograph|head -n 10|awk -F\> '{print $2}'|awk -F\< '{print $1}' >> /tmp/notification.msgs
+while true; do
+    # Any msgs can be appended on
+    curl -s http://weicaixun.com/live/|grep text-justify:inter-ideograph|head -n 10|grep -o -P "(?<=ph\">).*(?=\<)"|sed 's/<.*>//g' > /tmp/notification.msgs
 
-ct=0
-while [ $ct -lt 20 ];
-do
-    while read line;
+    ct=0
+    while [ $ct -lt 10 ];
     do
-        echo "$line" > $FILEPATH
-        let ct=ct+1
-        sleep 3
-    done < /tmp/notification.msgs
-done
+        while read line;
+        do
+            dunstify "$line"
+            let ct=ct+1
+            sleep 6
+        done < /tmp/notification.msgs
+    done
+done &
+
 

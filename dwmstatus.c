@@ -346,7 +346,7 @@ main(void)
 	for (;;sleep(1)) {
 		tm = mktimes("%a %b/%d,%Y∫_%H:%M:%S e^r(t)du", tzargentina);
 		bat = getbattery("/sys/class/power_supply/BAT0");
-        msg = notification("/home/lorenzo", ".notification.msg");
+        msg = notification("/home/lorenzo", ".notification.tasks");
         status = smprintf("%s [%s] %s ", msg, bat, tm);
 		setstatus(status);
 
