@@ -9,16 +9,16 @@ FILEPATH=/home/lorenzo/.notification.tasks
 :> $FILEPATH
 
 # Any msgs can be appended on
-task -l|grep -vi "^ID\|--\|^$\|task$" > /tmp/notification.tasks
+task -l|grep -vi "^ID\|--\|^$\|tasks$" > /tmp/notification.tasks
 
 ct=0
-while [ $ct -lt 20 ];
+while [ $ct -lt 60 ];
 do
     while read line;
     do
         echo "$line" > $FILEPATH
         let ct=ct+1
-        sleep 3
+        sleep 1
     done < /tmp/notification.tasks
 done
 
